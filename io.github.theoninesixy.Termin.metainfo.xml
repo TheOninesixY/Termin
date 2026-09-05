@@ -5,7 +5,7 @@
   <project_license>GPL-3.0-or-later</project_license>
   <name>Termin</name>
   <summary>Lite Terminal</summary>
-  <summary xml:lang="zh_CN">轻量终端模拟器</summary>
+  <summary xml:lang="zh_CN">简约优雅，保持专注</summary>
   <developer id="io.github.theoninesixy">
     <name>TheOninesixY</name>
   </developer>
@@ -26,7 +26,7 @@
   <launchable type="desktop-id">io.github.theoninesixy.Termin.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <image>https://raw.githubusercontent.com/TheOninesixY/Termin/main/data/screenshots/screenshot-1.png</image>
+      <image>https://raw.githubusercontent.com/TheOninesixY/Termin/refs/heads/main/screenshot.png</image>
       <caption>Main window of Termin</caption>
     </screenshot>
   </screenshots>
