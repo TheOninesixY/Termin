@@ -35,9 +35,9 @@
   <url type="vcs-browser">https://github.com/TheOninesixY/Termin</url>
   <content_rating type="oars-1.1" />
   <releases>
-    <release version="1.0.1" date="2026-09-04">
+    <release version="1.0.2" date="2026-09-06">
       <description>
-        <p>优化触控板兼容和多窗口支持</p>
+        <p>添加F11全屏</p>
       </description>
     </release>
   </releases>

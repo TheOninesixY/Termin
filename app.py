@@ -109,6 +109,7 @@ class TerminWindow(Adw.ApplicationWindow):
         self.terminal.connect("realize", self.on_terminal_realize)
 
         self.setup_key_controllers()
+        self.connect("notify::fullscreened", self.on_fullscreen_changed)
 
         self.toolbar_view.set_content(self.scrolled_window)
         self.set_content(self.toolbar_view)
@@ -232,7 +233,21 @@ class TerminWindow(Adw.ApplicationWindow):
         controller.connect("key-pressed", self.on_key_pressed)
         self.add_controller(controller)
 
+    def on_fullscreen_changed(self, window, pspec):
+        is_fullscreen = self.is_fullscreen()
+        self.header_bar.set_visible(not is_fullscreen)
+
+    def toggle_fullscreen(self):
+        if self.is_fullscreen():
+            self.unfullscreen()
+        else:
+            self.fullscreen()
+
     def on_key_pressed(self, controller, keyval, keycode, state):
+        if keyval == Gdk.KEY_F11:
+            self.toggle_fullscreen()
+            return True
+
         modifiers = state & (Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK)
         ctrl_shift = Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK
 
