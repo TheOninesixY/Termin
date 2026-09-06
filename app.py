@@ -91,7 +91,7 @@ class TerminWindow(Adw.ApplicationWindow):
         if hasattr(self.terminal, "set_scroll_unit_is_pixels"):
             self.terminal.set_scroll_unit_is_pixels(True)
         if hasattr(self.terminal, "set_enable_fallback_scrolling"):
-            self.terminal.set_enable_fallback_scrolling(False)
+            self.terminal.set_enable_fallback_scrolling(True)
 
         self.setup_colors()
 
@@ -172,6 +172,18 @@ class TerminWindow(Adw.ApplicationWindow):
         self.scrolled_window.add_controller(controller)
 
     def on_scroll(self, controller, dx, dy):
+        event = controller.get_current_event()
+        if event and hasattr(event, "get_device"):
+            device = event.get_device()
+            if device and hasattr(device, "get_source"):
+                source = device.get_source()
+                touchpad_sources = (
+                    getattr(Gdk.InputSource, "TOUCHPAD", None),
+                    getattr(Gdk.InputSource, "TOUCHSCREEN", None),
+                )
+                if source in touchpad_sources:
+                    return False
+
         adj = self.scrolled_window.get_vadjustment()
         if not adj:
             return False
