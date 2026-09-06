@@ -57,4 +57,4 @@ modules:
       - type: file
         path: icon.svg
       - type: file
-        path: app.py
+        path: termin.py
