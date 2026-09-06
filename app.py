@@ -439,9 +439,8 @@ class TerminApp(Adw.Application):
         manager.set_color_scheme(Adw.ColorScheme.FORCE_DARK)
         apply_theme_styles()
 
-        win = self.props.active_window
-        if not win:
-            win = TerminWindow(application=self)
+        win = TerminWindow(application=self)
+        self.add_window(win)
         win.present()
 
 
