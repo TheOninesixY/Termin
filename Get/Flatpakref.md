@@ -13,11 +13,11 @@ permalink: /Get/Flatpakref/
 
 运行
 ```sh
-flatpak install https://onsy.qzz.io/Termin.flatpakref
+flatpak install https://onsy.qzz.io/flrepo/Termin.flatpakref
 ```
 
 ---
 
 ## 使用本地`.flatpakref`文件安装
 
-[下载`Termin.flatpakref`文件](/Termin.flatpakref)，然后使用命令或其他方式安装。
+[下载`Termin.flatpakref`文件](https://onsy.qzz.io/flrepo/Termin.flatpakref)，然后使用命令或其他方式安装。
