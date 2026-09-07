@@ -4,10 +4,13 @@ title: "Get From Flatpakref"
 permalink: /Get/Flatpakref/
 ---
 
+<!---
 > #### 说明
 > 该方案为上架Flathub前的备选方案，在上架Flathub后将不再建议使用
 
 ---
+
+--->
 
 ## 使用在线命令安装
 
