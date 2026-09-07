@@ -1,4 +1,7 @@
-# 使用Git获取Termin
+---
+layout: page
+title: "Get From Git"
+---
 
 ## 克隆仓库
 

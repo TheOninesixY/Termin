@@ -1,3 +1,6 @@
-# 使用Flathub获取Termin
+---
+layout: page
+title: "Get From Flathub"
+---
 
->目前暂未上架Flahub，敬请期待。
+> 目前暂未上架 Flathub，敬请期待。
