@@ -45,7 +45,7 @@ modules:
   - name: termin
     buildsystem: simple
     build-commands:
-      - install -Dm755 app.py /app/bin/termin
+      - install -Dm755 termin.py /app/bin/termin
       - install -Dm644 io.github.theoninesixy.Termin.desktop /app/share/applications/io.github.theoninesixy.Termin.desktop
       - install -Dm644 io.github.theoninesixy.Termin.metainfo.xml /app/share/metainfo/io.github.theoninesixy.Termin.metainfo.xml
       - install -Dm644 icon.svg /app/share/icons/hicolor/scalable/apps/io.github.theoninesixy.Termin.svg

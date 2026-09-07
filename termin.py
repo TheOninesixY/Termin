@@ -3,6 +3,7 @@ import os
 import pwd
 import sys
 import shutil
+import ctypes
 import warnings
 from urllib.parse import unquote, urlparse
 import gi
@@ -624,20 +625,22 @@ class TerminWindow(Adw.ApplicationWindow):
 
         working_dir = GLib.get_home_dir()
 
+        envv = GLib.get_environ()
+        envv = GLib.environ_setenv(envv, "TERM_PROGRAM", "Termin", True)
+        envv = GLib.environ_setenv(envv, "COLORTERM", "truecolor", True)
+        envv = GLib.environ_setenv(envv, "TERM", "xterm-256color", True)
+
         if self.is_flatpak:
             pty_flags = Vte.PtyFlags.DEFAULT
             host_spawn_bin = "/app/bin/host-spawn" if os.path.exists("/app/bin/host-spawn") else "host-spawn"
             argv = [
                 host_spawn_bin,
+                "--env=TERM,TERM_PROGRAM,COLORTERM,PWD",
                 shell_path,
             ]
-            envv = GLib.get_environ()
         else:
             pty_flags = Vte.PtyFlags.DEFAULT
             argv = [shell_path]
-            envv = GLib.environ_setenv(GLib.get_environ(), "TERM_PROGRAM", "Termin", True)
-            envv = GLib.environ_setenv(envv, "COLORTERM", "truecolor", True)
-            envv = GLib.environ_setenv(envv, "TERM", "xterm-256color", True)
 
         self.terminal.spawn_async(
             pty_flags=pty_flags,
@@ -673,7 +676,18 @@ class TerminApp(Adw.Application):
         win.present()
 
 
+def set_process_title(title):
+    # PR_SET_NAME (15) renames the process; fastfetch reads this from
+    # /proc/<pid>/stat to identify the terminal.
+    try:
+        libc = ctypes.CDLL(None)
+        libc.prctl(15, title.encode(), 0, 0, 0)
+    except Exception:
+        pass
+
+
 def main():
+    set_process_title("Termin")
     app = TerminApp()
     return app.run(sys.argv)
 
