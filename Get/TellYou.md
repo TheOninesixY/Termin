@@ -37,16 +37,16 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 sudo flatpak remote-modify flathub --url=https://mirror.sjtu.edu.cn/flathub
 ```
 
->若下载速度更慢了或提升效果不理想，可以再换个镜像：
->```sh
-># USTC 中国科学技术大学开源软件镜像
->sudo flatpak remote-modify flathub --url=https://mirrors.ustc.edu.cn/flathub
->```
->```sh
-># CERNET 校园网联合镜像站
->sudo flatpak remote-modify flathub --url=https://mirrors.cernet.edu.cn/flathub
->```
->或切回Flathub官方镜像
->```sh
->sudo flatpak remote-modify flathub --url=https://dl.flathub.org/repo
->```
+若下载速度更慢了或提升效果不理想，可以再换个镜像：
+```sh
+# USTC 中国科学技术大学开源软件镜像
+sudo flatpak remote-modify flathub --url=https://mirrors.ustc.edu.cn/flathub
+```
+```sh
+# CERNET 校园网联合镜像站
+sudo flatpak remote-modify flathub --url=https://mirrors.cernet.edu.cn/flathub
+```
+或切回Flathub官方镜像
+```sh
+sudo flatpak remote-modify flathub --url=https://dl.flathub.org/repo
+```

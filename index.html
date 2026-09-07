@@ -2,24 +2,48 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
     <title>Termin</title>
     <link rel="icon" type="image/svg+xml" href="public/logo.svg">
     <link rel="apple-touch-icon" href="public/logo.svg">
     <style>
         :root {
+            /* 默认深色模式 */
             --bg-color: #1e1e24;
             --surface-color: #282c34;
             --surface-hover: #2e333d;
+            --card-bg: rgba(40, 44, 52, 0.85);
+            --card-bg-hover: rgba(46, 51, 61, 0.95);
             --text-primary: #ffffff;
             --text-secondary: #abb2bf;
             --text-muted: #6f7786;
             --accent: #61afef;
             --accent-hover: #5294cb;
+            --btn-text: #1e1e24;
             --border-color: rgba(255, 255, 255, 0.08);
             --border-hover: rgba(255, 255, 255, 0.16);
             --radius-btn: 8px;
             --radius-card: 12px;
+        }
+
+        /* 浅色模式（跟随设备自动切换） */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #f6f8fa;
+                --surface-color: #ffffff;
+                --surface-hover: #f0f2f5;
+                --card-bg: rgba(255, 255, 255, 0.88);
+                --card-bg-hover: rgba(255, 255, 255, 0.98);
+                --text-primary: #1f2328;
+                --text-secondary: #57606a;
+                --text-muted: #8c959f;
+                --accent: #0969da;
+                --accent-hover: #0854ad;
+                --btn-text: #ffffff;
+                --border-color: rgba(31, 35, 40, 0.1);
+                --border-hover: rgba(31, 35, 40, 0.2);
+            }
         }
 
         * {
@@ -28,6 +52,7 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
@@ -48,6 +73,7 @@
             -webkit-font-smoothing: antialiased;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         a {
@@ -94,6 +120,7 @@
             color: var(--text-primary);
             letter-spacing: -0.02em;
             margin-bottom: 12px;
+            transition: color 0.3s ease;
         }
 
         .subtitle {
@@ -101,6 +128,7 @@
             color: var(--text-secondary);
             max-width: 520px;
             margin: 0 auto 32px;
+            transition: color 0.3s ease;
         }
 
         .btn {
@@ -108,12 +136,13 @@
             align-items: center;
             justify-content: center;
             background-color: var(--accent);
-            color: #1e1e24;
+            color: var(--btn-text);
             font-size: 1rem;
             font-weight: 600;
             padding: 12px 32px;
             border-radius: var(--radius-btn);
             transition: background-color 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            touch-action: manipulation;
         }
 
         .btn:hover {
@@ -137,6 +166,7 @@
             background: none;
             border: none;
             outline: none;
+            touch-action: manipulation;
         }
 
         .scroll-down-btn:hover {
@@ -199,7 +229,7 @@
         }
 
         .card {
-            background-color: rgba(40, 44, 52, 0.85);
+            background-color: var(--card-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
@@ -210,7 +240,7 @@
 
         .card:hover {
             border-color: var(--border-hover);
-            background-color: rgba(46, 51, 61, 0.95);
+            background-color: var(--card-bg-hover);
         }
 
         .card h2 {
@@ -218,12 +248,14 @@
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: clamp(4px, 1vh, 10px);
+            transition: color 0.3s ease;
         }
 
         .card p {
             font-size: clamp(0.78rem, 1.1vw, 0.92rem);
             color: var(--text-secondary);
             line-height: clamp(1.4, 2.2vh, 1.6);
+            transition: color 0.3s ease;
         }
 
         /* Footer */
@@ -235,10 +267,11 @@
             width: 100%;
             z-index: 2;
             position: relative;
+            transition: color 0.3s ease;
         }
 
         /* 高度不足屏幕响应 */
-        @media (max-height: 750px) {
+        @media (max-height: 750px) and (min-width: 821px) {
             .screenshot-wrapper {
                 max-width: 720px;
             }
@@ -258,20 +291,37 @@
             }
         }
 
+        /* 移动端响应优化 */
         @media (max-width: 820px) {
             .snap-section {
                 min-height: auto;
-                padding: 60px 0;
+                padding: 48px 0;
+            }
+
+            .hero {
+                min-height: 85vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            /* 手机端隐藏截图区域 */
+            .screenshot-wrapper {
+                display: none;
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
-                margin-top: -80px;
+                margin-top: 0;
                 gap: 16px;
             }
 
             h1 {
                 font-size: 2.1rem;
+            }
+
+            .scroll-down-btn {
+                bottom: 16px;
             }
         }
     </style>
@@ -340,7 +390,7 @@
                     feat1Desc: "Natively tailored for modern Linux desktops. Features a seamless headerbar, classic One Dark palette, and smooth scroll curves for a clean interface.",
                     feat2Title: "Smart Copy & Paste",
                     feat2Desc: "Copy on select while preserving interrupt signals when unselected; Ctrl+V paste at idle prompt. Right-click menu exports Markdown code blocks with Shell highlighting.",
-                    fgeat3Title: "Built with Python",
+                    feat3Title: "Built with Python",
                     feat3Desc: "Built natively on Python and PyGObject / VTE. Lightweight, lightning-fast startup, without heavy framework overhead, adhering to a pure single-window philosophy.",
                     footerText: "© 2026 TheOninesixY. Open source under GPL-3.0-or-later."
                 }
@@ -377,9 +427,9 @@
             const sections = Array.from(document.querySelectorAll('.snap-section'));
             let currentIndex = 0;
             let isAnimating = false;
-            const scrollDuration = 900; // 滚屏动画持续时间 (毫秒)，可调节平滑慢速
+            const scrollDuration = 900; // 滚屏动画持续时间 (毫秒)
 
-            // 柔和缓动曲线 (easeInOutCubic)
+            // 缓动曲线 (easeInOutCubic)
             function easeInOutCubic(t) {
                 return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
             }
@@ -416,7 +466,7 @@
                 smoothScrollTo(targetY, scrollDuration);
             }
 
-            // 同步当前位置（如页面刷新或调整窗口）
+            // 同步当前位置
             function updateCurrentIndex() {
                 const scrollPosition = window.scrollY || window.pageYOffset;
                 let closestIndex = 0;
@@ -469,7 +519,11 @@
             const scrollDownBtn = document.getElementById('scrollDownBtn');
             if (scrollDownBtn) {
                 scrollDownBtn.addEventListener('click', () => {
-                    goToSection(1);
+                    if (window.innerWidth <= 820) {
+                        sections[1].scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        goToSection(1);
+                    }
                 });
             }
         })();
