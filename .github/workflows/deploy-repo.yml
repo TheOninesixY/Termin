@@ -1,6 +1,8 @@
 name: Build Flatpak Repo and Deploy Pages
 
 on:
+  schedule:
+    - cron: '0 12 * * *' # 每天 UTC 12:00 自动触发
   push:
     branches:
       - page
