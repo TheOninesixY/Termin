@@ -44,6 +44,12 @@ jobs:
           echo "[INFO] Downloading remote manifest from ${MANIFEST_URL}..."
           curl -fsSL "${MANIFEST_URL}" -o "${MANIFEST}"
 
+          # Initialize OSTree repository in the current directory if not already initialized
+          if [ ! -d "${REPO_DIR}/objects" ]; then
+            echo "[INFO] Initializing OSTree repository in ${REPO_DIR}..."
+            ostree init --mode=archive-z2 --repo="${REPO_DIR}"
+          fi
+
           echo "[INFO] Starting flatpak-builder export to OSTree repository..."
           flatpak-builder \
             --user \
