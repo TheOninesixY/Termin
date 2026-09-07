@@ -1,6 +1,7 @@
 ---
 layout: page
 title: "Get From Git"
+permalink: /Get/Git/
 ---
 
 ## 克隆仓库
