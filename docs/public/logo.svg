@@ -1,1 +1,35 @@
-../../icon.svg
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="chassis-front" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#deddda"/>
+      <stop offset="20%" stop-color="#9a9996"/>
+      <stop offset="70%" stop-color="#5e5c64"/>
+      <stop offset="100%" stop-color="#3d3846"/>
+    </linearGradient>
+    <linearGradient id="chassis-rim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#77767b" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="screen-surface" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a2533"/>
+      <stop offset="100%" stop-color="#1f1b26"/>
+    </linearGradient>
+    <linearGradient id="screen-inner-rim" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <rect x="8.8" y="13.6" width="110.4" height="110.4" rx="9.6" fill="url(#chassis-front)"/>
+    <rect x="9.4" y="14.2" width="109.2" height="109.2" rx="9" fill="none" stroke="url(#chassis-rim)" stroke-width="1.2"/>
+  </g>
+  <g>
+    <rect x="8.8" y="4" width="110.4" height="110.4" rx="9.6" fill="#9a9996"/>
+    <rect x="10.6" y="5.8" width="106.8" height="106.8" rx="7.8" fill="url(#screen-surface)"/>
+    <rect x="11.2" y="6.4" width="105.6" height="105.6" rx="7.2" fill="none" stroke="url(#screen-inner-rim)" stroke-width="1.2"/>
+  </g>
+  <g fill="#ffffff">
+    <path d="M 31.6 42.4 L 49.6 59.2 L 31.6 76 L 39.4 76 L 57.4 59.2 L 39.4 42.4 Z"/>
+    <rect x="61.6" y="70" width="30" height="6"/>
+  </g>
+</svg>
