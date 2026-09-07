@@ -63,6 +63,7 @@ jobs:
           flatpak-builder \
             --user \
             --install-deps-from=flathub \
+            --disable-rofiles-fuse \
             --gpg-sign="C40563883002D85414F6517269B202E6183A72A2" \
             --repo="${REPO_DIR}" \
             --force-clean \
@@ -75,11 +76,12 @@ jobs:
             --generate-static-deltas \
             "${REPO_DIR}"
 
-          # Clean temporary files
-          rm -rf "${MANIFEST}" "${BUILD_DIR}" .flatpak-builder
+          # Clean temporary files safely
+          rm -rf "${MANIFEST}" "${BUILD_DIR}"
+          rm -rf .flatpak-builder 2>/dev/null || true
           echo "[INFO] OSTree repository built successfully."
 
-      - name: Build Jekyll Site and Upload Pages Artifact
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
