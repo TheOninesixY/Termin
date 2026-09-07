@@ -14,7 +14,7 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 gi.require_version("Vte", "3.91")
 
-from gi.repository import Gtk, Adw, Vte, GLib, Gio, Pango, Gdk
+from gi.repository import Gtk, Adw, Vte, GLib, Gio, Pango, Gdk, GObject
 
 TRANSLATIONS = {
     "en": {
@@ -166,6 +166,7 @@ class TerminWindow(Adw.ApplicationWindow):
         self.setup_fonts()
         self.setup_smooth_scrolling()
         self.setup_context_menu()
+        self.setup_drag_and_drop()
         self.terminal.connect("window-title-changed", self.on_window_title_changed)
         self.terminal.connect("current-directory-uri-changed", self.on_directory_changed)
         self.terminal.connect("child-exited", self.on_child_exited)
@@ -289,6 +290,93 @@ class TerminWindow(Adw.ApplicationWindow):
 
         adj.set_value(curr + diff * 0.22)
         return GLib.SOURCE_CONTINUE
+
+    def setup_drag_and_drop(self):
+        drop_target = Gtk.DropTarget.new(GObject.TYPE_NONE, Gdk.DragAction.COPY)
+        drop_target.set_gtypes([Gdk.FileList.__gtype__, Gio.File.__gtype__, str])
+        drop_target.connect("drop", self.on_drop_files)
+        self.terminal.add_controller(drop_target)
+
+    def format_quoted_path(self, path: str) -> str:
+        path = os.path.abspath(path)
+        # 智能选择引号：
+        # 1. 若路径包含 " 但不包含 '，则使用单引号包裹：'path'
+        # 2. 其它情况优先使用双引号包裹，并对内部特殊字符（如 "、\、$、`）进行转义
+        if '"' in path and "'" not in path:
+            return f"'{path}'"
+        else:
+            escaped = (
+                path.replace("\\", "\\\\")
+                .replace('"', '\\"')
+                .replace("$", "\\$")
+                .replace("`", "\\`")
+            )
+            return f'"{escaped}"'
+
+    def extract_paths_from_drop_value(self, value):
+        paths = []
+        if value is None:
+            return paths
+
+        if isinstance(value, Gdk.FileList) or hasattr(value, "get_files"):
+            for gfile in value.get_files():
+                path = gfile.get_path()
+                if not path:
+                    uri = gfile.get_uri()
+                    if uri:
+                        parsed = urlparse(uri)
+                        if parsed.scheme == "file":
+                            path = unquote(parsed.path)
+                if path:
+                    paths.append(path)
+            return paths
+
+        if isinstance(value, Gio.File) or hasattr(value, "get_path"):
+            path = value.get_path()
+            if not path:
+                uri = value.get_uri()
+                if uri:
+                    parsed = urlparse(uri)
+                    if parsed.scheme == "file":
+                        path = unquote(parsed.path)
+            if path:
+                paths.append(path)
+            return paths
+
+        if isinstance(value, str):
+            for line in value.splitlines():
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if line.startswith("file://"):
+                    parsed = urlparse(line)
+                    path = unquote(parsed.path)
+                    paths.append(path)
+                elif os.path.isabs(line) or os.path.exists(line):
+                    paths.append(line)
+            return paths
+
+        if hasattr(value, "__iter__") and not isinstance(value, (bytes, bytearray)):
+            for item in value:
+                paths.extend(self.extract_paths_from_drop_value(item))
+
+        return paths
+
+    def on_drop_files(self, target, value, x, y):
+        paths = self.extract_paths_from_drop_value(value)
+        if not paths:
+            return False
+
+        quoted_paths = [self.format_quoted_path(p) for p in paths]
+        text_to_paste = " ".join(quoted_paths)
+
+        if hasattr(self.terminal, "paste_text"):
+            self.terminal.paste_text(text_to_paste)
+        elif hasattr(self.terminal, "feed_child"):
+            self.terminal.feed_child(list(text_to_paste.encode("utf-8")))
+
+        self.terminal.grab_focus()
+        return True
 
     def setup_key_controllers(self):
         controller = Gtk.EventControllerKey.new()

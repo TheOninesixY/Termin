@@ -1,3 +1,4 @@
 .flatpak-builder/
 build-dir/
 run.log
+__pycache__/

@@ -5,7 +5,7 @@
   <project_license>GPL-3.0-or-later</project_license>
   <name>Termin</name>
   <summary>Lite Terminal</summary>
-  <summary xml:lang="zh_CN">简约优雅，保持专注</summary>
+  <summary xml:lang="zh_CN">不被多余的东西干扰，从现在做起。</summary>
   <developer id="io.github.theoninesixy">
     <name>TheOninesixY</name>
   </developer>
@@ -35,9 +35,9 @@
   <url type="vcs-browser">https://github.com/TheOninesixY/Termin</url>
   <content_rating type="oars-1.1" />
   <releases>
-    <release version="1.0.2" date="2026-09-06">
+    <release version="1.1.0" date="2026-09-07">
       <description>
-        <p>添加F11全屏</p>
+        <p>优化了一些东西</p>
       </description>
     </release>
   </releases>
